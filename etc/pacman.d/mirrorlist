@@ -1,0 +1,11 @@
+##
+## Arch Linux repository mirrorlist
+## Sorted by mirror score from mirror status page
+## Generated on 2016-06-01
+##
+Server = https://mirror.aarnet.edu.au/pub/archlinux/$repo/os/$arch
+Server = rsync://mirror.aarnet.edu.au/archlinux/$repo/os/$arch
+Server = http://mir.archlinux.fr/$repo/os/$arch
+Server = http://ftp.tu-chemnitz.de/pub/linux/archlinux/$repo/os/$arch
+Server = http://ftp.hosteurope.de/mirror/ftp.archlinux.org/$repo/os/$arch
+
