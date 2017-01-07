@@ -1,0 +1,113 @@
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintfull
+
+*.charClass : 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48,58:48,63:48,61:48,44:48,38:48,59:48
+
+URxvt.font : xft:Terminess  Powerline:pixelsize=14
+URxvt.boldFont : xft:Terminess Powerline:pixelsize=14:style=Bold
+URxvt.italicFont : xft:Terminess Powerline:pixelsize=14
+URxvt.boldItalicFont : xft:Terminess Powerline:pixelsize=14
+
+*.saveLines : 4096
+*.scrollBar : false
+*.dynamicColors : true
+*.multiScroll : true
+
+URxvt.perl-ext-common : default,matcher,keyboard-select,clipboard,url-select,vtwheel
+URxvt.url-select.launcher : /usr/bin/firefox
+URxvt.url-select.underline: true
+URxvt.matcher.button : 1
+
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
+
+URxvt.keysym.M-c: perl:clipboard:copy
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.keysym.M-C-v: perl:clipboard:paste_escaped
+
+urxvt*urgentOnBell:       true
+urxvt*secondaryScroll:    false
+URxvt*scrollstyle: plain
+URxvt*scrollTtyKeypress: true
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer:  false
+urxvt*loginShell:         true
+
+URxvt*iso14755: False
+
+URxvt*.depth: 32
+URxvt*.intensityStyles: true
+
+URxvt*.keysym.Control-Up:   \033[1;5A
+URxvt*.keysym.Control-Down:    \033[1;5B
+URxvt*.keysym.Control-Left:    \033[1;5D
+URxvt*.keysym.Control-Right:    \033[1;5C
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+
+!Rofi settings
+!rofi.color-enabled: true
+
+!*background: #002b36
+!*foreground: #657b83
+*fading: 25
+*fadeColor: #000000
+*cursorColor: #93a1a1
+*pointerColorBackground: #586e75
+*pointerColorForeground: #93a1a1
+
+!urxvt color scheme:
+
+URxvt*background: [90]#121212
+URxvt*foreground: #DEDEDE
+
+URxvt*colorUL: #86a2b0
+
+! black
+URxvt*color0  : #2E3436
+URxvt*color8  : #555753
+! red
+URxvt*color1  : #CC0000
+URxvt*color9  : #EF2929
+! green
+URxvt*color2  : #4E9A06
+URxvt*color10 : #8AE234
+! yellow
+URxvt*color3  : #C4A000
+URxvt*color11 : #FCE94F
+! blue
+URxvt*color4  : #3465A4
+URxvt*color12 : #729FCF
+! magenta
+URxvt*color5  : #75507B
+URxvt*color13 : #AD7FA8
+! cyan
+URxvt*color6  : #06989A
+URxvt*color14 : #34E2E2
+! white
+URxvt*color7  : #D3D7CF
+URxvt*color15 : #EEEEEC
+
+rofi.opacity: 95
+rofi.font: terminess 11
+rofi.color-window: #060606,#D7D7D7
+rofi.color-normal: #121212,#DEDEDE,#1E1E1E,#000000,#f5f5f5
+rofi.bw: 0
+rofi.terminal: urxvt
+rofi.sidebar-mode: true
+rofi.fuzzy: true
+rofi.levenshtein-sort: true
+rofi.parse-known-hosts: true
+rofi.separator-style: solid
+rofi.hide-scrollbar: true
+!rofi.
+!rofi.
+!rofi.
+!rofi.
+!rofi.
+!rofi.
+!rofi.

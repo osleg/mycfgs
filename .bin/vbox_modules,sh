@@ -1,0 +1,4 @@
+sudo modprobe -v vboxdrv
+sudo modprobe -v vboxnetflt
+sudo modprobe -v vboxnetadp
+

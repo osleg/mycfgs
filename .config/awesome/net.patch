@@ -1,0 +1,38 @@
+--- lain/widgets/net.lua	2015-02-19 19:57:55.506893407 +0800
++++ lain_old/widgets/net.lua	2015-02-16 16:27:27.147573452 +0800
+@@ -40,6 +40,17 @@
+     end
+ end
+ 
++function net.get_signal()
++    f = io.popen("awk 'NR==3 {print $3}' /proc/net/wireless")
++    si = f:read()
++    f:close()
++    if si ~= nil then
++        return si:match("(%d+).")
++    else
++        return '\b'
++    end
++end
++
+ local function worker(args)
+     local args = args or {}
+     local timeout = args.timeout or 2
+@@ -63,7 +74,7 @@
+         end
+ 
+         net_now.carrier = helpers.first_line('/sys/class/net/' .. iface ..
+-                                           '/carrier') or "0"
++                                           '/carrier') or "0.0"
+         net_now.state = helpers.first_line('/sys/class/net/' .. iface ..
+                                            '/operstate') or "down"
+         local now_t = helpers.first_line('/sys/class/net/' .. iface ..
+@@ -77,6 +88,8 @@
+         net_now.received = tostring((now_r - net.last_r) / timeout / units)
+         net_now.received = string.gsub(string.format('%.1f', net_now.received), ",", ".")
+ 
++        net_now.signal = net.get_signal()
++
+         widget = net.widget
+         settings()
+ 

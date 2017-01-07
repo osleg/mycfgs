@@ -1,0 +1,8 @@
+---
+- !supmua.org,2006-10-01/Redwood/MBox
+  uri: mbox:/home/alex/Mail
+  usual: true
+  archived: false
+  id: 1
+  labels:
+  - mail

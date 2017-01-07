@@ -1,0 +1,16 @@
+run_once("xcompmgr &")
+run_once("xss-lock -- i3lock -n -i /home/alex/Pictures/wp/lock.png &")
+run_once("xmodmap /home/alex/.Xmodmap")
+run_once("wmname", "LG3D") -- java fix
+run_once("unclutter &")
+run_once('xcalib ~/.config/colorprofiles/"Color LCD-EA8876A9-951C-B458-A168-05BC015C42A8.icc"')
+run_once("xxkb &")
+run_once("blueman-applet &")
+--run_once("mpd &")
+--run_once("redshift-gtk", nil, "python3 /usr/bin/redshift-gtk") -- redshift
+--run_once("udiskie --tray", nil, '/usr/bin/python /usr/bin/udiskie --tray')
+--run_once("unagi &")
+--run_once("wicd-gtk -t &")
+--run_once("/home/alex/.bin/disable_mosart.sh")
+--run_once("/home/alex/.bin/multidisplay.sh")
+--run_once('rofi -opacity 95 -fg "#f2f2f2" -bg "#121212" -terminal urxvtc -key-window mod4+a -key-run mod4+r -key-ssh mod4+s -sidebar-mode &')

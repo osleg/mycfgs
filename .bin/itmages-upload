@@ -1,0 +1,210 @@
+#!/usr/bin/perl -w
+use strict;
+use LWP::UserAgent;
+use HTTP::Request::Common qw(POST);
+use HTTP::Cookies;
+use locale;
+
+sub login ();
+sub logout ();
+sub upload ();
+sub readconfig();
+sub interactive_conf ();
+sub setconfig (@);
+sub ml_print ($$);
+sub fix (@);
+sub upload_image ($);
+sub show_help ();		  
+
+# vars/account
+my $conffile = "$ENV{HOME}/.itmages.conf";
+my %conf;
+# vars/upload
+my ($conn, $cookie);
+my ($link, $id, $key);
+
+# vars/arguments
+my $arg0 = $ARGV[0] || "";
+my $arg1 = $ARGV[1] || "";
+
+
+# UTIL
+
+sub ml_print ($$){
+    print "$_[$ENV{LANG} eq 'ru_RU.UTF-8']\n";
+}
+
+sub fix (@) {
+    for (@_) { s/^\s*(.*?)\s*$/$1/; }
+}
+
+sub unhtml ($) {
+    my $htmlline = shift;
+    $htmlline =~ s/&amp;/&/g;
+    return $htmlline;
+}
+
+sub show_help (){
+    print "itmages-upload script, v0.3\n";
+    ml_print "Usage:", "Использование:";
+    print "itmages-upload (help|configure)\n";
+    print "itmages-upload image.{png/jpeg/gif}\n";
+    print "itmages-upload /any/dir/with/pictures\n";
+    print "\thelp - ";
+    ml_print "Print this help", "Вывести эту справку";
+    print "\tconfigure - ";
+    ml_print "Select account to use", "Выбрать аккаунт для загрузки";
+    print "\t/directory - ";
+    ml_print "Upload all pictures from directory",
+             "Загрузить все изображения из директории";
+}
+
+# CONFIG
+
+sub readconfig () {
+    open my $fh, '<', $conffile
+	or return 0;
+    while(<$fh>){
+	my ($name, $value) = split '=', $_;
+	fix $name, $value; # убрать лишние пробелы до и после слов
+	$conf{$name} = $value;
+    }
+    close $fh
+	or die "Can't close config file";
+    return 1;
+}
+
+sub setconfig (@) {
+    open my $fl, '>', $conffile
+	or die "Can't write to config file";
+    print $fl "login = $_[0]\npassword = $_[1]\ndirect = $_[2]";
+    close $fl or die "Can't close config file";
+}
+
+sub interactive_conf () {
+    ml_print "Itmages script configuration", "Настройка скрипта";
+    ml_print "Would you like to get direct links to images (otherwise you would get links to itmages page)? (if you do not, type 'no' or just enter nothing and press Return):", "Хотите ли вы получать прямые ссылки на изображения (иначе скрипт будет выводить ссылки на страницы Itmages)? (Если вы не хотите, напишите 'нет', 'no' или просто не вводите ничего и нажмите Enter):";
+    my $direct_links = <STDIN>;
+    chomp $direct_links;
+    if (($direct_links eq "") || ($direct_links eq "no") || ($direct_links eq "нет")){
+	$direct_links = "no";
+    }else{
+	$direct_links = "yes";
+    }
+    ml_print "OpenId login is not implemented in this script, so you have to register (or use anonymous upload)", "Вход через OpenId не реализован, поэтому вам нужно зарегистрироваться на сайте (или использовать анонимную загрузку";
+    ml_print "Enter your login (or enter nothing if you want to use anonymous mode):",
+    "Введите логин (или не вводите ничего, если хотите использовать анонимный режим):";
+    my $login = <STDIN>;
+    chomp $login;
+    setconfig "", "", $direct_links and return if ($login eq "");
+    ml_print "Enter your password:", "Введите ваш пароль:";
+    my $password = <STDIN>;
+    chomp $password;
+    setconfig $login, $password, $direct_links;
+    ml_print "Script is now configured to use your account",
+    "Скрипт настроен на использование вашей учетной записи";
+    exit 0;
+}
+
+# ACCOUNT
+
+sub login () {
+    return unless $conf{'login'};
+    my $loginform = POST 'http://itmages.ru/api/login',
+    [ name => $conf{'login'},
+      passwd => $conf{'password'}
+    ];
+    my $response = $conn->request($loginform);
+    $cookie->extract_cookies($response);
+    if($response->as_string() =~ /<status>failed<\/status>/sig){
+ 	ml_print "Loggining error", "Ошибка входа в аккаунт" and die;
+    }
+}
+
+sub logout () {
+    return unless $conf{'login'};
+    my $logoutform = POST 'http://itmages.ru/api/logout',
+       [ submit => "Выйти" ];
+    $cookie->add_cookie_header($logoutform);
+    my $response = $conn->request($logoutform);
+}
+
+# UPLOAD
+
+sub upload () {
+    die "File not found" unless -e $arg0;
+    unless (-d $arg0){
+	upload_image $arg0;
+    }else{
+	opendir my $dh, $arg0
+	    or die "Can't read directory";
+	chdir $arg0;
+	foreach my $file (readdir $dh){
+	    upload_image $file if (-f $file && $file =~ /png$|gif$|jpe?g$/);
+	}
+	closedir $dh;
+    }
+    
+}
+
+sub upload_image ($){
+    my $filename = shift;
+    push @{ $conn->requests_redirectable }, 'POST';
+    my $form = POST 'http://itmages.ru/api/add',
+    Content_Type => 'form-data',
+    Content => [
+	# param => [ file, filename, Other ]
+	"UFileManager[picture]" => "",
+	"UFileManager[picture]" => [ $filename,
+				   $filename,
+				   Content_Type => 'image/png' ],
+	yt0 => "Upload",
+	];
+    $cookie->add_cookie_header($form);
+    my $page = $conn->request($form)->as_string;
+    pop @{ $conn->requests_redirectable };
+    if($page =~ m{<full>([^<]+)</full>}s){
+	# ok
+	my ($addr, $storage, $id, $key);
+	if($page =~ m{<server>([^<]+)</server>}){
+	    $storage = $1;
+	}
+	if($page =~ m{<full>([^<]+)</full>}s){
+	    $addr = $1;
+	}
+	$link = "http://$storage.static.itmages.ru/$addr";
+	if($page =~ m{<id>([^<]+)</id>}s){
+	    $id = $1;
+	}
+	if($page =~ m{<key>([^<]+)</key>}s){
+	    $key = $1;
+	}
+	if($conf{'direct'} eq "yes"){
+	    print "$link\n";
+	}else{
+	    print "http://itmages.ru/image/view/$id/$key\n";
+	}
+    }elsif($page =~ m{<div class="errorMessage">([^<]+)</}sig){
+	ml_print "Error loading image: $1\n",
+	"Ошибка при загрузке изображения: $1\n";
+	die;
+    }
+}
+
+readconfig or interactive_conf;
+
+if($arg0 eq "configure"){
+    interactive_conf;
+}elsif($arg0 eq "help" || $arg0 eq ""){
+    show_help;
+}else{
+    # global $conn
+    $conn = LWP::UserAgent->new;
+    $conn->agent("itmages-upload Perl script (Perl, 0.3)");
+    # пустые cookie
+    $cookie = HTTP::Cookies->new;
+    $conn -> cookie_jar($cookie);
+    login;
+    upload;
+    logout;
+}

@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+BPATH="/sys/class/backlight/mba6x_backlight/"
+
+MINB=0
+MAXB=$(sudo cat ${BPATH}/max_brightness)
+
+CUR=$(sudo cat ${BPATH}/brightness)
+
+STEP=4
+C_STATE=$(((${CUR}*100)/${MAXB}))
+
+function list_brightness()
+{
+  for val in 5 10 15 30 50 70 100
+  do
+    if [ ${val} -eq ${C_STATE} ]
+    then
+      echo "*${val} %"
+    else
+      echo "${val} %"
+    fi
+  done
+}
+
+function notify()
+{
+  notify-send "Set brightness to: $1 %"
+}
+
+function new_bright()
+{
+  if [ -z "$1" ]
+  then
+    return 1
+  else
+    VALUE=$1
+    NEW_STATE=$((${VALUE}*${MAXB}/100))
+    notify $VALUE
+    sudo tee ${BPATH}brightness <<< ${NEW_STATE}
+  fi
+}
+
+if [ -z "$@" ]
+then
+  list_brightness
+else
+  if [ -n "$@" ]
+  then
+    if [[ ${@} =~ ^[0-9]+ ]]
+    then
+      VALUE=${@% *}
+      new_bright $VALUE
+    elif [[ ${@} =~ up ]]
+    then
+      VALUE=$((${C_STATE}+${STEP}))
+      if [ $VALUE -ge 100 ]
+      then
+        new_bright "100"
+        exit 0
+      fi
+      new_bright $VALUE
+    elif [[ ${@} =~ down ]]
+    then
+      VALUE=$((${C_STATE}-${STEP}))
+      if [ $VALUE -le 0 ]
+      then
+        new_bright "0"
+        exit 0
+      fi
+      new_bright $VALUE
+    fi
+  fi
+fi

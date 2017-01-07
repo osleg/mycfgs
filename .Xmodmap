@@ -1,0 +1,24 @@
+keycode 135=F15
+clear Lock
+clear Control
+clear Mod1
+clear Mod4
+keycode 9=ISO_Next_Group
+keycode 66=Control_L
+keycode 64=Super_L
+keycode 37=Alt_L
+keycode 23=Escape
+keycode 133=Tab
+add Lock = ISO_Next_Group
+add Control = Control_L
+add Mod1 = Alt_L Alt_R
+add Mod4 = Super_L Super_R
+pointer = 1 2 3 5 4 7 6 8 9 10 11 12
+
+keycode 160 = XF86AudioMute
+keycode 176 = XF86AudioRaiseVolume
+keycode 174 = XF86AudioLowerVolume
+
+keycode 144 = XF86AudioPrev
+keycode 162 = XF86AudioPlay
+keycode 153 = XF86AudioNext

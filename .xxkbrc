@@ -1,0 +1,21 @@
+XXkb.image.path: /home/alex/.config/xxkb
+
+XXkb.mainwindow.enable: yes
+XXkb.mainwindow.in_tray: true
+XXkb.mainwindow.geometry: 14x14+0+0
+XXkb.mainwindow.image.1: us.xpm
+XXkb.mainwindow.image.2: ru.xpm
+XXkb.mainwindow.image.4:
+XXkb.mainwindow.image.3:
+XXkb.mainwindow.type: tray
+XXkb.mainwindow.label.enable: false
+
+XXkb.controls.add_when_start:	yes
+XXkb.controls.add_when_create:	yes
+XXkb.controls.add_when_change:	yes
+XXkb.controls.focusout:		yes
+XXkb.controls.two_state:	yes
+XXkb.controls.button_delete:	yes
+XXkb.controls.button_delete_and_forget:	no
+XXkb.button.enable:		no
+
