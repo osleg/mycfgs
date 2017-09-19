@@ -38,9 +38,9 @@
     set history=250                     " Store a ton of history (default is 20)
     set hidden                          " Allow buffer switching without saving
     set lazyredraw                      " Don't redraw on macros
-    set iskeyword+=.                    " '.' is an end of word designator
-    set iskeyword+=#                    " '#' is an end of word designator
-    set iskeyword+=-                    " '-' is an end of word designator
+    set iskeyword -=.                    " '.' is an end of word designator
+    set iskeyword -=#                    " '#' is an end of word designator
+    set iskeyword -=-                    " '-' is an end of word designator
 
     " Set completeopt to menuone only to disable the preview =_=
     set completeopt=menuone
@@ -79,6 +79,10 @@
     " Disable ex mode
     nnoremap Q <nop>
 
+    " Set path to python interpreter, helps with virtualenvs
+    let g:python_host_prog = '/usr/bin/python2'
+    let g:python3_host_prog = '/usr/bin/python3'
+
     " Setting up the directories {{{
         set backup                  " Backups are nice ...
         if has('persistent_undo')
@@ -115,8 +119,13 @@
       Plug 'jaxbot/github-issues.vim'
       " TODO: Remap
       Plug 'airblade/vim-gitgutter'
+      Plug 'tpope/vim-rhubarb'
+      Plug 'idanarye/vim-merginal'
 
       Plug 'mattn/gist-vim'
+      Plug 'junegunn/vim-github-dashboard'
+      Plug 'junkblocker/patchreview-vim'
+      Plug 'codegram/vim-codereview'
     " }}}
 
     " Buffers {{{
@@ -134,6 +143,10 @@
       Plug 'dyng/ctrlsf.vim'
       Plug 'kristijanhusak/vim-multiple-cursors'
 
+      Plug 'dylanaraps/wal'
+
+      Plug 'machakann/vim-swap'
+      Plug 'godlygeek/tabular'
       Plug 'vim-scripts/gtags.vim'
       Plug 'flazz/vim-colorschemes'
       Plug 'Chiel92/vim-autoformat'
@@ -151,9 +164,14 @@
       Plug 'nathanaelkane/vim-indent-guides'
       Plug 'vim-scripts/restore_view.vim'
       Plug 'osyo-manga/vim-over'
+
+      Plug 'jtratner/vim-flavored-markdown'
     " }}}
 
     " General Programming {{{
+      "Plug 'vhakulinen/neovim-intellij-complete-deoplete'
+      Plug 'ekalinin/Dockerfile.vim'
+      Plug 'nathanaelkane/vim-indent-guides'
       Plug 'embear/vim-localvimrc'
       Plug 'kshenoy/vim-signature'
       Plug 'rdnetto/YCM-Generator', { 'branch': 'stable'}
@@ -165,10 +183,13 @@
       Plug 'w0rp/ale' " Syntax checker
       Plug 'thinca/vim-quickrun'
       Plug 'jiangmiao/auto-pairs'
+      Plug 'chrisbra/vim-diff-enhanced'
     " }}}
 
     " Snippets & AutoComplete {{{
-      Plug 'Valloric/YouCompleteMe'
+      "Plug 'Valloric/YouCompleteMe'
+      "Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+      Plug 'roxma/nvim-completion-manager'
       Plug 'jmcantrell/vim-virtualenv', has('gui') ? {'for': ['python']} : {}
       Plug 'SirVer/ultisnips'
       Plug 'honza/vim-snippets'
@@ -193,6 +214,7 @@
     " Languages {{{
       " Python {{{
         "Plug 'klen/python-mode', { 'for': 'python', 'branch': 'develop' }
+        Plug 'python-mode/python-mode', {'branch': 'develop'}
       " }}}
 
       " Lua {{{
@@ -252,8 +274,8 @@
       let g:utl_cfg_hdl_scm_http_system = "silent !firefox '%u#%f' 2>/dev/null 1>&2 &"
     " }}}
     " C stuff {{{
-      let g:formatprg_args_expr_c = '"--mode=c --style=linux -pcH".(&expandtab ? "s".&shiftwidth : "t")'
-      let g:formatprg_args_expr_cpp = '"--mode=c --style=linux -pcH".(&expandtab ? "s".&shiftwidth : "t")'
+      "let g:formatprg_args_expr_c = '"--mode=c --style=linux -pcH".(&expandtab ? "s".&shiftwidth : "t")'
+      "let g:formatprg_args_expr_cpp = '"--mode=c --style=linux -pcH".(&expandtab ? "s".&shiftwidth : "t")'
       noremap   \a        :A<CR>
       inoremap   \a   <C-C>:A<CR>
       let g:alternateNoDefaultAlternate = 1
@@ -290,20 +312,35 @@
     " JSON {{{
       let g:vim_json_syntax_conceal = 0
     " }}}
+    " nvim-completion-manager {{{
+      "inoremap <expr> <CR>  (pumvisible() ?  "\<cr>\<Plug>(expand_or_nl)" : "\<CR>")
+      "inoremap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"\<CR>")
+      inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+      inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    " }}}
     " YouCompleteMe {{{
       " Enable omni completion.
-      autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-      autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+      "autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+      "autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
       "autocmd FileType javascript,typescript setlocal omnifunc=javascriptcomplete#CompleteJS
-      autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-      autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-      autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-      autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-
+      "autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+      "autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+      "autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+      "autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+      " remap Ultisnips for compatibility for YCM
       " Seed identifiers from syntax files
-      let g:ycm_seed_identifiers_with_syntax = 1
-      let g:ycm_autoclose_preview_window_after_completion = 1
-      let g:ycm_autoclose_preview_window_after_insertion = 1
+      "let g:ycm_seed_identifiers_with_syntax = 1
+      "let g:ycm_autoclose_preview_window_after_completion = 1
+      "let g:ycm_autoclose_preview_window_after_insertion = 1
+      "" For snippet_complete marker.
+      "if has('conceal')
+          "set conceallevel=2 concealcursor=i
+      "endif
+
+      "" Disable the neosnippet preview candidate window
+      "" When enabled, there can be too much visual noise
+      "" especially when splits are used.
+      "set completeopt-=preview
     " }}}
     " Airline {{{
       let g:airline_powerline_fonts = 1
@@ -320,14 +357,12 @@
 
 
       "let g:airline#extensions#bufferline#enabled = 0
-    " }}}
-    " {{{ Python-mode
-      let g:pymode_rope = 1
-      let g:pymode_virtualenv = 0
-      let g:pymode_lint_checkers = ['pep8']
+      let g:airline_theme='jellybeans'
     " }}}
     " UltiSnips {{{
-      let g:UltiSnipsExpandTrigger="<c-j>"
+      let g:UltiSnipsExpandTrigger = '<C-j>'
+      let g:UltiSnipsJumpForwardTrigger = '<C-j>'
+      let g:UltiSnipsJumpBackwardTrigger = '<C-k>'
       let g:UltiSnipsListSnippets="<c-s-j>"
     " }}}
     " LocalVimRC {{{
@@ -344,7 +379,46 @@
     " }}}
     " Auto-pairs {{{
       let g:AutoPairsFlyMode = 0
-      let g:AutoPairsShortcut = '<Leader>pp'
+      let g:AutoPairsShortcutToggle = '<Leader>pp'
+      let g:AutoPairsMapCR = 0
+    " }}}
+    " {{{ vim-go
+      let g:go_highlight_functions = 1
+      let g:go_highlight_methods = 1
+      let g:go_highlight_fields = 1
+      let g:go_highlight_types = 1
+      let g:go_highlight_operators = 1
+      let g:go_highlight_build_constraints = 1
+      let g:go_fmt_command = "goimports"
+      let g:go_fmt_expiremental = 1
+    " }}}
+    " {{{ python-mode
+      let g:pymode_lint_checkers = ['pyflakes', 'pep8']
+      let g:pymode_trim_whitespaces = 0
+      let g:pymode_options = 0
+      let g:pymode_rope = 0
+      let g:pymode_virtualenv = 1
+      let g:pymode_breakpoint_bind = '<leader>bb'
+      let g:pymode_lint_on_fly = 0
+      let g:pymode_lint_cwindow = 0
+      let g:pymode_rope_complete_on_dot = 0
+      let g:pymode_rope_completion = 0
+      let g:pymode_rope_autoimport = 0
+      let g:pymode_rope_autoimport_import_after_complete = 0
+    " }}}
+    "{{{ gissues
+      so ~/.passwords/.gissues
+      let g:github_same_window=1
+      let g:gissues_lazy_load=1
+      let g:github_same_window=0
+    "}}}
+    " {{{ indend-guides
+      let g:indent_guides_start_level = 2
+      let g:indent_guides_guide_size = 1
+      let g:indent_guides_enable_on_vim_startup = 1
+    " }}}
+    " {{{ Github Dashboard
+     let g:github_dashboard = {'username': 'Osleg', 'password': g:github_access_token}
     " }}}
 
   " }}}
@@ -355,10 +429,21 @@
     set tabpagemax=15               " Only show 15 tabs
     set showmode                    " Display the current mode
 
-    set background=dark         " Dark background
-    set guifont=Terminus\ (TTF):h14
-    set noantialias
-    colorscheme jellybeans
+    set background=dark         " Dark background - it doesn't work
+    set guifont=xos4\ Terminess\ Powerline:h14
+    "if has("nvim")
+      " Neovim-qt Guifont command, to change the font
+      "command -nargs=? Guifont call rpcnotify(0, 'GuiFont', "<args>")
+      " Set font on start
+      "GuiFont "xos4 Terminess Powerline:h10"
+      " Set colorscheme
+      "colorscheme jellybeans
+    "else
+      colorscheme wal
+    "endif
+    if !has("nvim")
+      set noantialias
+    endif
     set t_Co=256            " Enable 256 colors to stop the CSApprox warning and make xterm vim shine
     highlight Normal ctermbg=NONE
     "highlight NonText ctermbg=250 ctermfg=250
@@ -407,6 +492,8 @@
     if has('gui')
       set guioptions=ag
     endif
+
+    hi CursorLine ctermbg=16 ctermfg=None
   " }}}
 
   " Formatting {{{
@@ -657,24 +744,28 @@
     " }}}
     " {{{ YouCompleteMe
       " Select by Enter key
-      let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
-      nnoremap <Leader>gD :YcmCompleter GetDoc<CR>
-      nnoremap <Leader>gr :YcmCompleter GoToReferences<CR>
-      nnoremap <Leader>gd :YcmCompleter GoToDeclaration<CR>
-      nnoremap <Leader>gf :YcmCompleter GoToDefinition<CR>
+      "let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+      "nnoremap <Leader>yD :YcmCompleter GetDoc<CR>
+      "nnoremap <Leader>yr :YcmCompleter GoToReferences<CR>
+      "nnoremap <Leader>yd :YcmCompleter GoToDeclaration<CR>
+      "nnoremap <Leader>yf :YcmCompleter GoToDefinition<CR>
     " }}}
     " Unite bindings buffregator settings {{{
         call unite#filters#matcher_default#use(['matcher_fuzzy'])
         call unite#filters#sorter_default#use(['sorter_rank'])
-        nmap <Leader>be :Unite -start-insert buffer<CR>
-        nmap <Leader>bE :Unite -start-insert buffer file_rec/async:!<CR>
-        nmap <Leader>bt :Unite -start-insert outline<CR>
+        nmap <Leader>bE :Unite -start-insert buffer<CR>
+        nmap <Leader>be :Unite -start-insert buffer file_rec/async:!<CR>
+        nmap <Leader>bt :Unite -start-insert -vertical -winwidth=30 outline<CR>
         nmap <Leader>bl :Unite location_list<CR>
         nmap <Leader>bq :Unite quickfix<CR>
         " Running grep for current buffer
         nmap <Leader>bg :Unite grep:%<CR>
         " Running grep for all open buffers
         nmap <Leader>bG :Unite grep:$buffers<CR>
+        " Running grep for all files in parent folder
+        nmap <Leader>bbg :Unite grep:.<CR>
+        nmap <Leader>br :Unite -start-insert register<CR>
+        nmap <Leader>bh :Unite -start-insert help<CR>
 
         autocmd FileType unite call s:unite_my_settings()
         " Unite buffer settings {{{
@@ -740,6 +831,14 @@
 
 
         " }}}
+    " }}}
+    " Fugutive {{{
+      nmap <silent><Leader>gw :Gwrite<CR>
+      nmap <silent><Leader>gs :Gstatus<CR>
+      nmap <silent><Leader>gc :Gcommit<CR>
+      nmap <silent><Leader>gp :Git! push<CR>
+      nmap <silent><Leader>gp :Git! pull<CR>
+
     " }}}
   " }}}
 " }}}
@@ -811,7 +910,7 @@
   " {{{ Activate Virtualenv and restart YCM
     function! VEActivate(venv)
       let vea = "VirtualEnvActivate " . a:venv
-      let ycmr = "YcmCompleter RestartServer /Users/alex/.virtualenvs/" . a:venv . '/bin/python'
+      let ycmr = "YcmCompleter RestartServer /home/alex/.virtualenvs/" . a:venv . '/bin/python'
       execute vea
       execute ycmr
     endfunction
