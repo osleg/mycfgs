@@ -142,7 +142,7 @@
       " Search and replace on steroids
       Plug 'dyng/ctrlsf.vim'
       Plug 'kristijanhusak/vim-multiple-cursors'
-
+      Plug 'phb1/gtd.vim'
       Plug 'dylanaraps/wal'
 
       Plug 'machakann/vim-swap'
@@ -161,7 +161,7 @@
       Plug 'vim-scripts/sessionman.vim', { 'on': ['SessionOpen','SessionSave','SessionList'] }
       Plug 'Lokaltog/vim-easymotion'
       Plug 'sjl/gundo.vim'
-      Plug 'nathanaelkane/vim-indent-guides'
+      Plug 'Yggdroot/indentLine'
       Plug 'vim-scripts/restore_view.vim'
       Plug 'osyo-manga/vim-over'
 
@@ -170,7 +170,9 @@
 
     " General Programming {{{
       "Plug 'vhakulinen/neovim-intellij-complete-deoplete'
+      Plug 'vim-scripts/DoxygenToolkit.vim'
       Plug 'ekalinin/Dockerfile.vim'
+      Plug 'sheerun/vim-polyglot'
       Plug 'nathanaelkane/vim-indent-guides'
       Plug 'embear/vim-localvimrc'
       Plug 'kshenoy/vim-signature'
@@ -187,7 +189,7 @@
     " }}}
 
     " Snippets & AutoComplete {{{
-      "Plug 'Valloric/YouCompleteMe'
+      "Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp']}
       "Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
       Plug 'roxma/nvim-completion-manager'
       Plug 'jmcantrell/vim-virtualenv', has('gui') ? {'for': ['python']} : {}
@@ -201,7 +203,7 @@
       Plug 'vim-airline/vim-airline-themes'
     " }}}
 
-    " OrgMode {{{
+    " OrgMode and Projects management {{{
       Plug 'jceb/vim-orgmode', { 'for': ['orgmode', 'org'] }
       Plug 'dhruvasagar/vim-table-mode'
       Plug 'tpope/vim-speeddating'
@@ -209,12 +211,17 @@
       Plug 'osleg/calendar-vim', { 'for': ['orgmode', 'org'] }
       Plug 'vim-scripts/SyntaxRange'
       Plug 'vim-scripts/utl.vim', { 'for': ['orgmode', 'org'] }
+      
+      " Taskwiki
+      Plug 'vimwiki/vimwiki'
+      Plug 'powerman/vim-plugin-AnsiEsc'
+      Plug 'tbabej/taskwiki'
     " }}}
 
     " Languages {{{
       " Python {{{
         "Plug 'klen/python-mode', { 'for': 'python', 'branch': 'develop' }
-        Plug 'python-mode/python-mode', {'branch': 'develop'}
+        Plug 'python-mode/python-mode', {'for': 'python', 'branch': 'develop'}
       " }}}
 
       " Lua {{{
@@ -239,7 +246,7 @@
       " }}}
 
       " HTML {{{
-        Plug 'amirh/HTML-AutoCloseTag', { 'for': ['html', 'htmljinja'] }
+        Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'htmljinja'] }
         Plug 'hail2u/vim-css3-syntax', { 'for': ['html', 'htmljinja', 'css', 'scss'] }
         Plug 'gorodinskiy/vim-coloresque', { 'for': ['html', 'htmljinja'] }
         Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmljinja'] }
@@ -344,6 +351,7 @@
     " }}}
     " Airline {{{
       let g:airline_powerline_fonts = 1
+      let g:airline#extensions#bufferline#enabled = 0
       let g:airline#extensions#tabline#enabled = 1
       let g:airline#extensions#tagbar#enabled = 1
       let g:airline#extensions#default#section_truncate_width = {
@@ -356,8 +364,7 @@
           \ }
 
 
-      "let g:airline#extensions#bufferline#enabled = 0
-      let g:airline_theme='jellybeans'
+      let g:airline_theme='molokai'
     " }}}
     " UltiSnips {{{
       let g:UltiSnipsExpandTrigger = '<C-j>'
@@ -395,7 +402,7 @@
     " {{{ python-mode
       let g:pymode_lint_checkers = ['pyflakes', 'pep8']
       let g:pymode_trim_whitespaces = 0
-      let g:pymode_options = 0
+      let g:pymode_options = 1
       let g:pymode_rope = 0
       let g:pymode_virtualenv = 1
       let g:pymode_breakpoint_bind = '<leader>bb'
@@ -412,13 +419,11 @@
       let g:gissues_lazy_load=1
       let g:github_same_window=0
     "}}}
-    " {{{ indend-guides
-      let g:indent_guides_start_level = 2
-      let g:indent_guides_guide_size = 1
-      let g:indent_guides_enable_on_vim_startup = 1
-    " }}}
     " {{{ Github Dashboard
      let g:github_dashboard = {'username': 'Osleg', 'password': g:github_access_token}
+    " }}}
+    " GTD {{{
+      let g:gtd#dir = '~/.gtdnotes'
     " }}}
 
   " }}}
@@ -439,7 +444,7 @@
       " Set colorscheme
       "colorscheme jellybeans
     "else
-      colorscheme wal
+      colorscheme molokai
     "endif
     if !has("nvim")
       set noantialias
@@ -486,7 +491,7 @@
     set scrolloff=3                 " Minimum lines to keep above and below cursor
     set foldenable                  " Auto fold code
     set list
-    set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+    set listchars=tab:┆\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
     set noea                        " Don't resize windows on buffers split/close
 
     if has('gui')
@@ -839,6 +844,9 @@
       nmap <silent><Leader>gp :Git! push<CR>
       nmap <silent><Leader>gp :Git! pull<CR>
 
+    " }}}
+    " VimWiki {{{
+      nmap <Leader>vw <Plug>VimwikiIndex
     " }}}
   " }}}
 " }}}
