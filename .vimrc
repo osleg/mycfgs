@@ -20,6 +20,7 @@
     set nocompatible            " Must be first line
     filetype plugin indent on   " Automatically detect file types.
     syntax on                   " Syntax highlighting
+    set autoread                " Autoread file if it was changed on disk
     set mouse=a                 " Automatically enable mouse usage
     set mousehide               " Hide the mouse cursor while typing
     scriptencoding utf-8
@@ -102,6 +103,7 @@
     " Unite {{{
       Plug 'Shougo/vimproc.vim', { 'do': 'make' }
       Plug 'Shougo/unite.vim'
+      "Plug 'Shougo/denite.nvim'
       Plug 'Shougo/neomru.vim'
       Plug 'hewes/unite-gtags'
       Plug 'Shougo/unite-outline'
@@ -115,6 +117,8 @@
     " Git {{{
       " TODO: Map
       Plug 'tpope/vim-fugitive'
+      Plug 'junegunn/gv.vim'
+      Plug 'jreybert/vimagit'
       " TODO: Setup
       Plug 'jaxbot/github-issues.vim'
       " TODO: Remap
@@ -132,10 +136,11 @@
       Plug 'moll/vim-bbye'
       " TODO: Map
       Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+      Plug 'yuttie/comfortable-motion.vim'
     " }}}
 
     " Database {{{
-      Plug 'vim-scripts/dbext.vim'
+      Plug 'tpope/vim-db'
     " }}}
 
     " General {{{
@@ -144,6 +149,10 @@
       Plug 'kristijanhusak/vim-multiple-cursors'
       Plug 'phb1/gtd.vim'
       Plug 'dylanaraps/wal'
+
+      " Slack from VIM
+      " Requires binary
+      "Plug 'yaasita/edit-slack.vim'  
 
       Plug 'machakann/vim-swap'
       Plug 'godlygeek/tabular'
@@ -164,12 +173,14 @@
       Plug 'Yggdroot/indentLine'
       Plug 'vim-scripts/restore_view.vim'
       Plug 'osyo-manga/vim-over'
+      Plug 'junegunn/vim-easy-align'
 
       Plug 'jtratner/vim-flavored-markdown'
     " }}}
 
     " General Programming {{{
       "Plug 'vhakulinen/neovim-intellij-complete-deoplete'
+      Plug 'luochen1990/rainbow'
       Plug 'vim-scripts/DoxygenToolkit.vim'
       Plug 'ekalinin/Dockerfile.vim'
       Plug 'sheerun/vim-polyglot'
@@ -184,7 +195,7 @@
       Plug 'rizzatti/dash.vim'
       Plug 'w0rp/ale' " Syntax checker
       Plug 'thinca/vim-quickrun'
-      Plug 'jiangmiao/auto-pairs'
+      Plug 'Raimondi/delimitMate'
       Plug 'chrisbra/vim-diff-enhanced'
     " }}}
 
@@ -320,8 +331,9 @@
       let g:vim_json_syntax_conceal = 0
     " }}}
     " nvim-completion-manager {{{
-      "inoremap <expr> <CR>  (pumvisible() ?  "\<cr>\<Plug>(expand_or_nl)" : "\<CR>")
-      "inoremap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-J>":"\<CR>")
+      
+      imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
+      imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-j>":"\<CR>")
       inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
       inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     " }}}
@@ -364,7 +376,7 @@
           \ }
 
 
-      let g:airline_theme='molokai'
+      let g:airline_theme='papercolor'
     " }}}
     " UltiSnips {{{
       let g:UltiSnipsExpandTrigger = '<C-j>'
@@ -384,12 +396,8 @@
       let g:ale_sign_column_always = 1
       let g:ale_warn_about_trailing_whitespace = 0
     " }}}
-    " Auto-pairs {{{
-      let g:AutoPairsFlyMode = 0
-      let g:AutoPairsShortcutToggle = '<Leader>pp'
-      let g:AutoPairsMapCR = 0
-    " }}}
     " {{{ vim-go
+      let g:go_fmt_experimental = 1
       let g:go_highlight_functions = 1
       let g:go_highlight_methods = 1
       let g:go_highlight_fields = 1
@@ -415,15 +423,33 @@
     " }}}
     "{{{ gissues
       so ~/.passwords/.gissues
-      let g:github_same_window=1
       let g:gissues_lazy_load=1
+      let g:gissues_async_omni=0
       let g:github_same_window=0
+      let g:gissues_issue_vsplit = 1
+      let g:gissues_split_expand = 1
+      let g:gissues_vsplit_width = 90
+      let g:gissues_split_height = 20
     "}}}
     " {{{ Github Dashboard
      let g:github_dashboard = {'username': 'Osleg', 'password': g:github_access_token}
     " }}}
     " GTD {{{
       let g:gtd#dir = '~/.gtdnotes'
+    " }}}
+    " edit-slack {{{
+      "let g:yaasita_slack_token = 
+    " }}}
+    " delimitmMate {{{
+      let g:delimitMate_expand_cr = 1
+      let g:delimitMate_expand_space = 1
+    " }}}
+    " Comfortable-motion {{{
+      let g:comfortable_motion_no_default_key_mappings = 1
+      let g:comfortable_motion_impulse_multiplier = 0.7
+    " }}}
+    " Rainbow Parenthesis {{{
+      let g:rainbow_active = 0
     " }}}
 
   " }}}
@@ -437,14 +463,17 @@
     set background=dark         " Dark background - it doesn't work
     set guifont=xos4\ Terminess\ Powerline:h14
     "if has("nvim")
-      " Neovim-qt Guifont command, to change the font
-      "command -nargs=? Guifont call rpcnotify(0, 'GuiFont', "<args>")
-      " Set font on start
-      "GuiFont "xos4 Terminess Powerline:h10"
+      "if has("gui_running")
+        " Neovim-qt Guifont command, to change the font
+        "command -nargs=? Guifont call rpcnotify(0, 'GuiFont', "<args>")
+        " Set font on start
+        "GuiFont xos4 Terminess Powerline:h12
+      "endif
+    "endif
       " Set colorscheme
       "colorscheme jellybeans
     "else
-      colorscheme molokai
+      colorscheme kalahari
     "endif
     if !has("nvim")
       set noantialias
@@ -760,7 +789,7 @@
         call unite#filters#sorter_default#use(['sorter_rank'])
         nmap <Leader>bE :Unite -start-insert buffer<CR>
         nmap <Leader>be :Unite -start-insert buffer file_rec/async:!<CR>
-        nmap <Leader>bt :Unite -start-insert -vertical -winwidth=30 outline<CR>
+        nmap <Leader>bt :Unite -start-insert -vertical -winwidth=60 outline<CR>
         nmap <Leader>bl :Unite location_list<CR>
         nmap <Leader>bq :Unite quickfix<CR>
         " Running grep for current buffer
@@ -848,6 +877,31 @@
     " VimWiki {{{
       nmap <Leader>vw <Plug>VimwikiIndex
     " }}}
+    " Quickrun {{{
+      nmap <silent> <Leader>e :QuickRun<CR>
+    " }}}
+    " Comfortable-Motion {{{
+      nnoremap <silent> <C-d> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 2)<CR>
+      nnoremap <silent> <C-u> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -2)<CR>
+      nnoremap <silent> <C-f> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * 4)<CR>
+      nnoremap <silent> <C-b> :call comfortable_motion#flick(g:comfortable_motion_impulse_multiplier * winheight(0) * -4)<CR>
+    " }}}
+    " Rainbow Parenthesis {{{
+      nnoremap <silent> <LocalLeader>rp :RainbowToggle<CR>
+    " }}}
+    " Gissues {{{
+      nmap <silent><Leader>gi :Gissues<CR>
+      nmap <silent><Leader>gI :Giadd<CR>
+    " }}}
+  " }}}
+  " LocalLeader maps {{{
+    " Golang {{{
+    "augroup myGolang
+      "au!
+      "autocmd FileType go
+            "\ nmap <buffer> <LocalLeader>d <Plug>
+    "augroup END
+    " }}}
   " }}}
 " }}}
 
@@ -933,4 +987,3 @@
     endfunction
   " }}}
 " }}}
-
