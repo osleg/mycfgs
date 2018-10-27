@@ -44,7 +44,13 @@
     set iskeyword -=-                    " '-' is an end of word designator
 
     " Set completeopt to menuone only to disable the preview =_=
-    set completeopt=menuone
+    "set completeopt=noinsert,menuone,noselect
+    "au User Ncm2PopupOpen set completeopt=noinsert,menuone,noselect
+    "au User Ncm2PopupClose set completeopt=menuone
+    set completeopt=noinsert,menuone,noselect
+
+    " Hide current mode from status line
+    set noshowmode
 
     " Set russian support
     "set langmap=ФИСВУАПРШОЛДЬТЩЗЙКЫЕГМЦЧНЯ;ABCDEFGHIJKLMNOPQRSTUVWXYZ,фисвуапршолдьтщзйкыегмцчня;abcdefghijklmnopqrstuvwxyz
@@ -101,17 +107,18 @@
     " }}}
 
     " Unite {{{
-      Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-      Plug 'Shougo/unite.vim'
-      "Plug 'Shougo/denite.nvim'
+      "Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+      "Plug 'Shougo/unite.vim'
+      Plug 'Shougo/denite.nvim'
+      Plug 'chemzqm/unite-location'
       Plug 'Shougo/neomru.vim'
-      Plug 'hewes/unite-gtags'
-      Plug 'Shougo/unite-outline'
-      Plug 'Shougo/unite-help'
-      Plug 'osyo-manga/unite-quickfix'
-      Plug 'lambdalisue/unite-grep-vcs'
-      Plug 'Shougo/vimproc.vim'
-      Plug 'Shougo/vimfiler.vim'
+      "Plug 'hewes/unite-gtags'
+      "Plug 'Shougo/unite-outline'
+      "Plug 'Shougo/unite-help'
+      "Plug 'osyo-manga/unite-quickfix'
+      "Plug 'lambdalisue/unite-grep-vcs'
+      "Plug 'Shougo/vimproc.vim'
+      "Plug 'Shougo/vimfiler.vim'
     " }}}
 
     " Git {{{
@@ -125,6 +132,8 @@
       Plug 'airblade/vim-gitgutter'
       Plug 'tpope/vim-rhubarb'
       Plug 'idanarye/vim-merginal'
+
+      Plug 'rhysd/committia.vim'
 
       Plug 'mattn/gist-vim'
       Plug 'junegunn/vim-github-dashboard'
@@ -146,10 +155,16 @@
     " General {{{
       " Search and replace on steroids
       Plug 'dyng/ctrlsf.vim'
-      Plug 'kristijanhusak/vim-multiple-cursors'
-      Plug 'phb1/gtd.vim'
-      Plug 'dylanaraps/wal'
+      "Plug 'kristijanhusak/vim-multiple-cursors'
+      "Plug 'phb1/gtd.vim'
+      "Plug 'dylanaraps/wal'
+      Plug 'wellle/targets.vim'
 
+      " Search index
+      Plug 'google/vim-searchindex'
+
+      " Highlight and naviagete through words under cursor
+      Plug 'lfv89/vim-interestingwords'
       " Slack from VIM
       " Requires binary
       "Plug 'yaasita/edit-slack.vim'  
@@ -158,13 +173,14 @@
       Plug 'godlygeek/tabular'
       Plug 'vim-scripts/gtags.vim'
       Plug 'flazz/vim-colorschemes'
+      "Plug 'rainglow/vim'
       Plug 'Chiel92/vim-autoformat'
       Plug 'myusuf3/numbers.vim'
-      Plug 'farseer90718/vim-taskwarrior'
+      "Plug 'farseer90718/vim-taskwarrior'
       " Shows content of registers
       Plug 'junegunn/vim-peekaboo'
       " Scratch on n|vmap gs
-      Plug 'mtth/scratch.vim'
+      "Plug 'mtth/scratch.vim'
       Plug 'tpope/vim-surround'
       Plug 'tpope/vim-repeat'
       Plug 'vim-scripts/sessionman.vim', { 'on': ['SessionOpen','SessionSave','SessionList'] }
@@ -172,14 +188,13 @@
       Plug 'sjl/gundo.vim'
       Plug 'Yggdroot/indentLine'
       Plug 'vim-scripts/restore_view.vim'
-      Plug 'osyo-manga/vim-over'
       Plug 'junegunn/vim-easy-align'
 
-      Plug 'jtratner/vim-flavored-markdown'
     " }}}
 
     " General Programming {{{
       "Plug 'vhakulinen/neovim-intellij-complete-deoplete'
+      Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
       Plug 'luochen1990/rainbow'
       Plug 'vim-scripts/DoxygenToolkit.vim'
       Plug 'ekalinin/Dockerfile.vim'
@@ -197,15 +212,27 @@
       Plug 'thinca/vim-quickrun'
       Plug 'Raimondi/delimitMate'
       Plug 'chrisbra/vim-diff-enhanced'
+      " YAML folding support
+      Plug 'pedrohdz/vim-yaml-folds'
     " }}}
 
     " Snippets & AutoComplete {{{
-      "Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp']}
-      "Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-      Plug 'roxma/nvim-completion-manager'
+      Plug 'Valloric/YouCompleteMe', {'for': ['c', 'cpp']}
+      Plug 'rdnetto/YCM-Generator', {'branch': 'stable'}
+      "Plug 'roxma/nvim-completion-manager'
+      "Plug 'ncm2/ncm2'
+      "Plug 'roxma/nvim-yarp'
       Plug 'jmcantrell/vim-virtualenv', has('gui') ? {'for': ['python']} : {}
       Plug 'SirVer/ultisnips'
       Plug 'honza/vim-snippets'
+      " Deoplete
+      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+      " deoplete go completion
+      Plug 'zchee/deoplete-go', { 'do': 'make' }
+
+      " Show doc in statline for word under cursor
+      Plug 'Shougo/echodoc.vim'
+      "Plug 'ncm2/ncm2-ultisnips'
     " }}}
 
     " Theme {{{
@@ -221,18 +248,19 @@
       Plug 'chrisbra/NrrwRgn'
       Plug 'osleg/calendar-vim', { 'for': ['orgmode', 'org'] }
       Plug 'vim-scripts/SyntaxRange'
-      Plug 'vim-scripts/utl.vim', { 'for': ['orgmode', 'org'] }
-      
+      Plug 'vim-scripts/utl.vim'
+
       " Taskwiki
-      Plug 'vimwiki/vimwiki'
-      Plug 'powerman/vim-plugin-AnsiEsc'
-      Plug 'tbabej/taskwiki'
+      "Plug 'vimwiki/vimwiki'
+      "Plug 'powerman/vim-plugin-AnsiEsc'
+      "Plug 'tbabej/taskwiki'
     " }}}
 
     " Languages {{{
       " Python {{{
         "Plug 'klen/python-mode', { 'for': 'python', 'branch': 'develop' }
-        Plug 'python-mode/python-mode', {'for': 'python', 'branch': 'develop'}
+        "Plug 'python-mode/python-mode', {'for': 'python', 'branch': 'develop'}
+        "Plug 'tmhedberg/SimpylFold', {'for': 'python'}
       " }}}
 
       " Lua {{{
@@ -241,12 +269,13 @@
       " }}}
 
       " C | C++ {{{
-        Plug 'vim-scripts/c.vim'
-        Plug 'vim-scripts/a.vim'
+        Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
+        Plug 'vim-scripts/a.vim', {'for': ['c', 'cpp']}
       "}}}
 
       " Go {{{
         Plug 'fatih/vim-go'
+        "Plug 'ncm2/ncm2-go'
       " }}}
 
       " Javascript {{{
@@ -257,20 +286,25 @@
       " }}}
 
       " HTML {{{
-        Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'htmljinja'] }
-        Plug 'hail2u/vim-css3-syntax', { 'for': ['html', 'htmljinja', 'css', 'scss'] }
-        Plug 'gorodinskiy/vim-coloresque', { 'for': ['html', 'htmljinja'] }
-        Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmljinja'] }
-        Plug 'mattn/emmet-vim', { 'for': ['html', 'htmljinja'] }
+        "Plug 'vim-scripts/HTML-AutoCloseTag', { 'for': ['html', 'htmljinja'] }
+        "Plug 'hail2u/vim-css3-syntax', { 'for': ['html', 'htmljinja', 'css', 'scss'] }
+        "Plug 'gorodinskiy/vim-coloresque', { 'for': ['html', 'htmljinja'] }
+        "Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmljinja'] }
+        "Plug 'mattn/emmet-vim', { 'for': ['html', 'htmljinja'] }
       " }}}
 
       " Rust {{{
         Plug 'wting/rust.vim', { 'for': 'rust' }
       " }}}
-      
+
       " RAML {{{
-        Plug 'IN3D/vim-raml', { 'for': 'raml' }
+        "Plug 'IN3D/vim-raml', { 'for': 'raml' }
       " }}}
+
+      " Dart {{{
+        Plug 'dart-lang/dart-vim-plugin'
+      " }}}
+
     " }}}
 
     " End plugin {{{
@@ -330,12 +364,29 @@
     " JSON {{{
       let g:vim_json_syntax_conceal = 0
     " }}}
-    " nvim-completion-manager {{{
-      
-      imap <expr> <CR>  (pumvisible() ?  "\<c-y>\<Plug>(expand_or_nl)" : "\<CR>")
-      imap <expr> <Plug>(expand_or_nl) (cm#completed_is_snippet() ? "\<C-j>":"\<CR>")
+    " deoplete {{{
+      let g:deoplete#enable_at_startup = 1
+      "let g:deoplete#sources#go#auto_goos = 1
       inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
       inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+      autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+      call deoplete#custom#option('max_list', 10)
+      call deoplete#custom#source('LanguageClient',
+            \ 'min_pattern_length',
+            \ 2)
+    " }}}
+    " ncm {{{
+      "autocmd BufEnter * call ncm2#enable_for_buffer()
+      "au TextChangedI * call ncm2#auto_trigger()
+      "inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+      "inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+      "inoremap <expr> <C-@> <Plug>(ncm2_manual_trigger)
+      "inoremap <C-Space> <C-X><C-O>
+      "let g:ncm2#complete_delay = 20
+      "let g:ncm2#popup_delay = 20
+      "let g:ncm2#matcher = 'abbrfuzzy'
+      "let g:ncm2#sorter = 'abbrfuzzy'
+      "let g:ncm2#auto_popup = 1
     " }}}
     " YouCompleteMe {{{
       " Enable omni completion.
@@ -367,16 +418,17 @@
       let g:airline#extensions#tabline#enabled = 1
       let g:airline#extensions#tagbar#enabled = 1
       let g:airline#extensions#default#section_truncate_width = {
-          \ 'b': 79,
+          \ 'b': 80,
           \ 'x': 60,
           \ 'y': 88,
-          \ 'z': 45,
-          \ 'warning': 80,
-          \ 'error': 80,
+          \ 'warning': 120,
+          \ 'error': 120,
+          \ 'statistics': 120,
           \ }
 
 
       let g:airline_theme='papercolor'
+      let g:airline_section_c='%t'
     " }}}
     " UltiSnips {{{
       let g:UltiSnipsExpandTrigger = '<C-j>'
@@ -397,7 +449,6 @@
       let g:ale_warn_about_trailing_whitespace = 0
     " }}}
     " {{{ vim-go
-      let g:go_fmt_experimental = 1
       let g:go_highlight_functions = 1
       let g:go_highlight_methods = 1
       let g:go_highlight_fields = 1
@@ -406,6 +457,10 @@
       let g:go_highlight_build_constraints = 1
       let g:go_fmt_command = "goimports"
       let g:go_fmt_expiremental = 1
+      let g:go_auto_type_info = 0
+      let g:go_info_mode = 'guru'
+      let g:go_fmt_fail_silently = 1
+      let g:go_term_enabled = 1
     " }}}
     " {{{ python-mode
       let g:pymode_lint_checkers = ['pyflakes', 'pep8']
@@ -451,7 +506,21 @@
     " Rainbow Parenthesis {{{
       let g:rainbow_active = 0
     " }}}
-
+    " LSP Langs {{{
+      let g:LanguageClient_serverCommands = {
+            \ 'python': ['pyls'],
+            \ 'rust': ['rls'],
+            \ 'go': ['go-langserver']
+            \ }
+    " }}}
+    " OrgMode {{{
+      let g:org_indent = 1
+    " }}}
+    " Dart {{{
+      let dart_html_in_string=v:true
+      let dart_style_guide = 2
+      let dart_format_on_save = 1
+    " }}}
   " }}}
 " }}}
 
@@ -473,7 +542,7 @@
       " Set colorscheme
       "colorscheme jellybeans
     "else
-      colorscheme kalahari
+      colorscheme monokain
     "endif
     if !has("nvim")
       set noantialias
@@ -748,7 +817,8 @@
       nmap <leader>sc :SessionClose<CR>
     " }}}
     " JSON {{{
-      nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+      nmap <leader>fj <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+      nmap <leader>fx <Esc>:%!xmllint --format -<CR><Esc>:set filetype=xml<CR>
     " }}}
     " TagBar {{{
       if isdirectory(expand("~/.vim/plugged/tagbar/"))
@@ -785,83 +855,24 @@
       "nnoremap <Leader>yf :YcmCompleter GoToDefinition<CR>
     " }}}
     " Unite bindings buffregator settings {{{
-        call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        call unite#filters#sorter_default#use(['sorter_rank'])
-        nmap <Leader>bE :Unite -start-insert buffer<CR>
-        nmap <Leader>be :Unite -start-insert buffer file_rec/async:!<CR>
-        nmap <Leader>bt :Unite -start-insert -vertical -winwidth=60 outline<CR>
-        nmap <Leader>bl :Unite location_list<CR>
-        nmap <Leader>bq :Unite quickfix<CR>
+        "call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        "call unite#filters#sorter_default#use(['sorter_rank'])
+        nmap <Leader>bE :Denite buffer <CR>
+        nmap <Leader>be :Denite buffer file/rec<CR>
+        nmap <Leader>bt :Denite -direction=topleft -split=vertical -winwidth=60 outline<CR>
+        nmap <Leader>bl :Denite location_list<CR>
+        nmap <Leader>bq :Denite quickfix<CR>
         " Running grep for current buffer
-        nmap <Leader>bg :Unite grep:%<CR>
+        nmap <Leader>bg :Denite grep<CR>
         " Running grep for all open buffers
-        nmap <Leader>bG :Unite grep:$buffers<CR>
+        nmap <Leader>bG :Denite grep:$buffers<CR>
         " Running grep for all files in parent folder
-        nmap <Leader>bbg :Unite grep:.<CR>
-        nmap <Leader>br :Unite -start-insert register<CR>
-        nmap <Leader>bh :Unite -start-insert help<CR>
+        nmap <Leader>bbg :Denite grep:.<CR>
+        nmap <Leader>br :Denite register<CR>
+        nmap <Leader>bh :Denite help<CR>
 
-        autocmd FileType unite call s:unite_my_settings()
-        " Unite buffer settings {{{
-            function! s:unite_my_settings()
-              " Overwrite settings.
-
-              " double jj for esc
-              imap <buffer> jj      <Plug>(unite_insert_leave)
-              imap <buffer><expr> j unite#smart_map('j', '')
-
-
-              nmap <silent><buffer><expr> v     unite#do_action('vsplit')
-
-              "imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
-              "nmap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
-
-              "imap <buffer> <TAB>   <Plug>(unite_select_next_line)
-
-              "imap <buffer> '     <Plug>(unite_quick_match_default_action)
-              "nmap <buffer> '     <Plug>(unite_quick_match_default_action)
-
-              "imap <buffer><expr> x
-                      "\ unite#smart_map('x', "\<Plug>(unite_quick_match_jump)")
-              "nmap <buffer> x     <Plug>(unite_quick_match_jump)
-
-              "nmap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
-              "imap <buffer> <C-z>     <Plug>(unite_toggle_transpose_window)
-
-              "imap <buffer> <C-y>     <Plug>(unite_narrowing_path)
-              "nmap <buffer> <C-y>     <Plug>(unite_narrowing_path)
-
-              "nmap <buffer> <C-j>     <Plug>(unite_toggle_auto_preview)
-
-              "nmap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
-              "imap <buffer> <C-r>     <Plug>(unite_narrowing_input_history)
-
-              "nnoremap <silent><buffer><expr> l
-                      "\ unite#smart_map('l', unite#do_action('default'))
-
-              "let unite = unite#get_current_unite()
-              "if unite.profile_name ==# 'search'
-                "nnoremap <silent><buffer><expr> r     unite#do_action('replace')
-              "else
-                "nnoremap <silent><buffer><expr> r     unite#do_action('rename')
-              "endif
-
-              "nnoremap <silent><buffer><expr> cd     unite#do_action('lcd')
-              "nnoremap <buffer><expr> S      unite#mappings#set_current_filters(
-                      "\ empty(unite#mappings#get_current_filters()) ?
-                      "\ ['sorter_reverse'] : [])
-
-              "" Runs "split" action by <C-s>.
-              "nmap <silent><buffer><expr> v     unite#do_action('vsplit')
-            endfunction
-
-            " Add UltiSnips
-            function! UltiSnipsCallUnite()
-                Unite -start-insert -immediately -no-empty ultisnips
-                return ''
-            endfunction
-            inoremap <silent> <c-b><c-u> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
-            nnoremap <Leader>bu a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
+        "inoremap <silent> <c-b><c-u> <C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
+        "nnoremap <Leader>bu a<C-R>=(pumvisible()? "\<LT>C-E>":"")<CR><C-R>=UltiSnipsCallUnite()<CR>
 
 
         " }}}
@@ -893,7 +904,11 @@
       nmap <silent><Leader>gi :Gissues<CR>
       nmap <silent><Leader>gI :Giadd<CR>
     " }}}
+    " UTL {{{
+      nmap <silent><Leader>ol :Utl ol<CR>
+    " }}}
   " }}}
+
   " LocalLeader maps {{{
     " Golang {{{
     "augroup myGolang
