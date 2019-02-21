@@ -58,6 +58,7 @@
   set scrolljump=5                                " Lines to scroll when cursor leaves screen
   set scrolloff=3                                 " Minimum lines to keep above and below cursor
   set spell                                       " Enable spell checker
+  set timeoutlen=500                              " Set shorter timeout for mappings
 
   " Search setup {{{
     set incsearch  " Find as you type
