@@ -17,48 +17,54 @@
 " }}}
 
 " Config {{{
-  set nocompatible                                " Disable VI compatibility
-  filetype plugin indent on                       " Automatically detect file types
-  syntax on                                       " Syntax Highlight
-  set autoread                                    " Re-read file if it was changed on disk
-  set autowrite                                   " Write buffer on leave
-  set shortmess=aoOtTc                            " Basically... truncate almost everything
-  set viewoptions=cursor,folds,options,unix,slash " What to write for mkview
-  set virtualedit=onemore                         " Allow virtual editing everything
-  set history=250                                 " Moar history!
-  set hidden                                      " allow switching buffers without writing
-  set lazyredraw                                  " Don't redraw on every sneeze
-  set completeopt=menuone,noinsert,noselect       " Always show completion menu, don't auto-insert/select
-  set noshowmode                                  " Don't show current mode in status line
-  set foldtext=FoldText()                         " Folds text
-  set nowrap                                      " Don't wrap lines
-  set nolinebreak                                 " Don't break lines
-  set autoindent                                  " Indent at the same level of the previous line
-  set shiftwidth=2                                " Use indents of 2 spaces
-  set expandtab                                   " Tabs are spaces, not tabs
-  set tabstop=2                                   " An indentation every 2 columns
-  set softtabstop=2                               " Let backspace delete indent
-  set splitright                                  " Puts new vsplit windows to the right of the current
-  set splitbelow                                  " Puts new split windows to the bottom of the current
-  set matchpairs+=<:>                             " Match, to be used with %
-  set pastetoggle=<F11>                           " pastetoggle (sane indentation on pastes)
-  set cursorline                                  " Highlight the line where cursor located
-  set backspace=indent,eol,start                  " Better backspace navigation
-  "set nu                                          " Line numbers
-  "set rnu                                         " RELATIVE line numbers
-  set showmatch                                   " Show matching bracket/parenthesis
-  set winminheight=0                              " allow buffers to be 1 line high
-  set wildmenu                                    " Show list instead of just completing
-  set wildmode=list:longest,full                  " Command <Tab> completion, list matches, then longest common part, then all.
-  set whichwrap=b,s,h,l,<,>,[,]                   " Backspace and cursor keys wrap too
-  set foldenable                                  " Enable folding by default
-  set list                                        " Enable showing tabs, spaces and trailings
-  set listchars=tab:┆\ ,trail:•,extends:#,nbsp:.  " Highlight problematic whitespace
-  set signcolumn=yes                              " Always show signs column
-  set scrolljump=5                                " Lines to scroll when cursor leaves screen
-  set scrolloff=3                                 " Minimum lines to keep above and below cursor
-  set nospell                                       " Enable spell checker
-  set timeoutlen=500                              " Set shorter timeout for mappings
+  " Basic stuff {{{
+    set nocompatible                                " Disable VI compatibility
+    filetype plugin indent on                       " Automatically detect file types
+    syntax on                                       " Syntax Highlight
+    set autoread                                    " Re-read file if it was changed on disk
+    set autowrite                                   " Write buffer on leave
+    set shortmess=aoOtTc                            " Basically... truncate almost everything
+    set viewoptions=cursor,folds,options,unix,slash " What to write for mkview
+    set virtualedit=onemore                         " Allow virtual editing everything
+    set history=250                                 " Moar history!
+    set hidden                                      " allow switching buffers without writing
+    set lazyredraw                                  " Don't redraw on every sneeze
+    set completeopt=menuone,noinsert,noselect       " Always show completion menu, don't auto-insert/select
+    set noshowmode                                  " Don't show current mode in status line
+    set foldtext=FoldText()                         " Folds text
+    set nowrap                                      " Don't wrap lines
+    set nolinebreak                                 " Don't break lines
+    set autoindent                                  " Indent at the same level of the previous line
+    set shiftwidth=2                                " Use indents of 2 spaces
+    set expandtab                                   " Tabs are spaces, not tabs
+    set tabstop=2                                   " An indentation every 2 columns
+    set softtabstop=2                               " Let backspace delete indent
+    set splitright                                  " Puts new vsplit windows to the right of the current
+    set splitbelow                                  " Puts new split windows to the bottom of the current
+    set matchpairs+=<:>                             " Match, to be used with %
+    set pastetoggle=<F11>                           " pastetoggle (sane indentation on pastes)
+    set cursorline                                  " Highlight the line where cursor located
+    set backspace=indent,eol,start                  " Better backspace navigation
+    set nonu                                        " Line numbers
+    set nornu                                       " RELATIVE line numbers
+    set showmatch                                   " Show matching bracket/parenthesis
+    set winminheight=0                              " allow buffers to be 1 line high
+    set wildmenu                                    " Show list instead of just completing
+    set wildmode=list:longest,full                  " Command <Tab> completion, list matches, then longest common part, then all.
+    set whichwrap=b,s,h,l,<,>,[,]                   " Backspace and cursor keys wrap too
+    set foldenable                                  " Enable folding by default
+    set list                                        " Enable showing tabs, spaces and trailings
+    set listchars=tab:┆\ ,trail:•,extends:#,nbsp:.  " Highlight problematic whitespace
+    set signcolumn=yes                              " Always show signs column
+    set scrolljump=5                                " Lines to scroll when cursor leaves screen
+    set scrolloff=3                                 " Minimum lines to keep above and below cursor
+    set nospell                                     " Enable spell checker
+    set timeoutlen=500                              " Set shorter timeout for mappings
+    set cmdheight=2                                 " Little bit more space for messages
+    set updatetime=300                              " faster CursorHold action
+    set inccommand=split                            " live substitute with  preview for offscreen items
+  " }}}
+
   " Search setup {{{
     set incsearch  " Find as you type
     set hlsearch   " Hilight search
@@ -66,13 +72,15 @@
     set smartcase  " Case sensitive when uc present
   " }}}
 
-  " Map leader and local leader keys to <space> and , respectively {{{
+  " Map leader and local leader keys to <space> and \ respectively {{{
     let mapleader=" "
     let localleader="\\"
   " }}}
 
   " Setting up the directories {{{
-    set backup           " Backups are nice ...
+  " fixes cocnvim stuff see https://github.com/neoclide/coc.nvim/issues/649
+    set nobackup         " Backups are nice ... but screw em (
+    set nowritebackup
     if has('persistent_undo')
       set undofile       " So is persistent undo ...
       set undolevels=250 " Maximum number of changes that can be undone
@@ -107,20 +115,6 @@
     "endif
   " }}}
 
-
-" }}}
-
-" AutoCmd {{{
-  " Instead of reverting the cursor to the last position in the buffer, we
-  " set it to the first line when editing a git commit message
-  au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
-
-  " Open help as rightmost split
-  au FileType help wincmd L
-
-  " Remove trailing whitespaces and ^M chars
-  " To disable the stripping of whitespace, add the following to your
-  autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,yml,perl,lua autocmd BufWritePre <buffer> call StripTrailingWhitespace()
 
 " }}}
 
@@ -203,7 +197,8 @@
     nnoremap <C-L> <C-W>l
     nnoremap <C-H> <C-W>h
   " }}}
-  nnoremap <silent> <leader>fec :tabnew ~/AppData/Local/nvim/init.vim<CR>
+
+  nnoremap <silent> <leader>fec :tabnew ~/.config/nvim/init.vim<CR>
 
 " }}}
 
@@ -214,10 +209,17 @@
 
   " Plugins List {{{
     " Frameworks and tools {{{
+      " Highlight word under cursor
+      "Plug 'dominikduda/vim_current_word'
+      "  Keys helper
+      Plug 'liuchengxu/vim-which-key'
+      " Zeal
+      Plug 'KabbAmine/zeavim.vim'
       " Nice comments
       Plug 'scrooloose/nerdcommenter'
       " File browser
       Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeFocus' }
+      "Plug 'justinmk/vim-dirvish'
       " Tagbar...
       Plug 'majutsushi/tagbar'
       " Hex editor in VIM
@@ -233,7 +235,7 @@
       " Fuzzy Finder, you don't need anything else
       Plug 'junegunn/fzf'
       Plug 'junegunn/fzf.vim'
-      " Remove numbers in non text buffers
+      "Remove numbers in non text buffers
       "Plug 'myusuf3/numbers.vim'
       " Shows content of registers
       Plug 'junegunn/vim-peekaboo'
@@ -243,8 +245,10 @@
       Plug 'vim-scripts/sessionman.vim', { 'on': ['SessionOpen','SessionSave','SessionList'] }
       " Save and restore cursor position
       Plug 'vim-scripts/restore_view.vim'
-      " East align stuff
+      " Easy align stuff
       Plug 'junegunn/vim-easy-align'
+      " Like easy align but more powerful (and complicated)
+      Plug 'godlygeek/tabular'
       " Visual marks
       Plug 'kshenoy/vim-signature'
       " Syntax checker, linetr and what not
@@ -263,11 +267,19 @@
       Plug 'luochen1990/rainbow'
       "Taskwarrior TUI
       Plug 'blindFS/vim-taskwarrior'
+      Plug 'vimwiki/vimwiki'
+      Plug 'powerman/vim-plugin-AnsiEsc'
+      Plug 'tbabej/taskwiki'
+      " Databases connections
+      Plug 'tpope/vim-dadbod'
     " }}}
 
     " Autocomplete {{{
       " CoC LSP {{{
-        Plug 'neoclide/coc.nvim', {'tag': '*', 'do': { -> coc#util#install()}}
+        Plug 'neoclide/coc.nvim', {'branch': 'release'}
+      " }}}
+      " Nvim LSP {{{
+        "Plug 'neovim/nvim-lsp'
       " }}}
     " }}}
 
@@ -288,13 +300,24 @@
         Plug 'plasticboy/vim-markdown'
       " }}}
 
+      " HTML/JS {{{
+        Plug 'mustache/vim-mustache-handlebars'
+      " }}}
+
       " GoDot {{{
         Plug 'calviken/vim-gdscript3'
       " }}}
 
       " Clojure {{{
-        Plug 'Olical/conjure', { 'tag': 'v2.1.2', 'do': 'bin/compile' }
-        Plug 'eraserhd/parinfer-rust'
+        Plug 'eraserhd/parinfer-rust', { 'do': 'cargo build --release' }
+        Plug 'Olical/conjure', { 'for': 'clojure', 'tag': 'v4.1.0' }
+        Plug 'bakpakin/fennel.vim'
+        " Folding for clojure
+        Plug 'gberenfield/cljfold.vim'
+        Plug 'fbeline/kibit-vim'
+        "Plug 'guns/vim-sexp'
+        "Plug 'tpope/vim-sexp-mappings-for-regular-people'
+        "Plug 'tpope/vim-fireplace'
       " }}}
     " }}}
 
@@ -307,7 +330,7 @@
       Plug 'flazz/vim-colorschemes'
       " Icons for filetypes
       "Plug 'ryanoasis/vim-devicons'
-      Plug 'bling/vim-bufferline'
+      "Plug 'bling/vim-bufferline'
       " OneDark theme
       Plug 'joshdick/onedark.vim'
     " }}}
@@ -329,14 +352,14 @@
 " Plugins Config {{{
   " Theme {{{
     "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-    if (empty($TMUX))
-      if (has("nvim"))
-        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-      endif
-    endif
-    set background=light    " Set dark for transparent window
-    set guifont=Hack:h8    " Set font
-    set termguicolors      " Set truecolor
+    "if (empty($TMUX))
+      "if (has("nvim"))
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+      "endif
+    "endif
+    set background=dark     " Set dark for transparent window
+    set guifont=xos4\ Terminess\ Powerline:h20    " Set font
+    set termguicolors       " Set truecolor
     "colorscheme  Atelier_SulphurpoolDark " Nice color scheme
     colorscheme  onedark " Nice color scheme
     " Transaprency {{{
@@ -351,8 +374,16 @@
     let g:rainbow_active = 1
   " }}}
 
+  " vim_current_word {{{
+    let g:vim_current_word#highlight_current_word = 0
+  " }}}
+
+  " Sexp {{{
+    let g:sexp_enable_insert_mode_mappings = 0
+  " }}}
+
   " NERDTree {{{
-    nnoremap <silent><Leader>e :NERDTreeFocus<CR>
+    nnoremap <silent><Leader>be :NERDTreeFocus<CR>
     let NERDTreeShowBookmarks=1
     let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$',
       \ '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
@@ -376,26 +407,33 @@
   " }}}
 
   " Airline {{{
+    " settings
+    let g:airline_highlighting_cache = 1
+    " disable some extensions
+    let g:airline#extensions#tabline#enabled = 0
+    " extenstions settings {{{
+      " branch
+      let g:airline#extensions#branch#displayed_head_limit = 14
+      let g:airline#extensions#branch#format = 2
+      " hunk
+      let g:airline#extensions#hunks#non_zero_only = 1
+    " }}}
+    " theme
     let g:airline_powerline_fonts = 1
-    let g:airline#extensions#bufferline#enabled = 0
-    let g:airline#extensions#tabline#enabled = 1
-    let g:airline#extensions#fugutive#enabled = 1
-    let g:airline#extensions#tagbar#enabled = 1
-    let g:airline#extensions#coc#enabled = 1
     let g:airline_theme = 'onedark'
   " }}}
 
   " Bufferline {{{
-    let g:bufferline_rotate=1
+    "let g:bufferline_rotate=1
   " "}}}
 
   " Tagbar {{{
-    nnoremap <silent><Leader>t :TagbarOpen fjc<CR>
+    nnoremap <silent><Leader>bT :TagbarOpen fjc<CR>
     let g:tagbar_left = 1
   " }}}
 
   " BBye {{{
-    nnoremap <silent> <leader>d :Bdelete<CR>
+    nnoremap <silent> <leader>bd :Bdelete<CR>
   " }}}
 
   " Indent Guides {{{
@@ -407,6 +445,26 @@
     let g:indent_guides_exclude_filetypes = ['help']
     " Disable indent guides mapping
     let g:indent_guides_default_mapping = 0
+  " }}}
+
+  " Which Key {{{
+    call which_key#register('<Space>', "g:which_key_map")
+    nnoremap <silent><leader> :WhichKey '<Space>'<CR>
+    nnoremap <silent><localleader> :WhichKey '\'<CR>
+
+    let g:which_key_map = {}
+    " Clojure
+    let g:which_key_map.r = {'name' : '+repl'}
+    let g:which_key_map.r.r = { 'name': '+refactor' }
+    let g:which_key_map.r.t = { 'name': '+thread' }
+    let g:which_key_map.r.l = { 'name': '+let' }
+    let g:which_key_map.r.o = { 'name': '+other' }
+    " Buffers manipulation
+    let g:which_key_map.b = {'name' : '+buffers' }
+    let g:which_key_map.g = {'name' : '+go+git' }
+    let g:which_key_map.f = {'name' : '+fold-level' }
+    let g:which_key_map.c = {'name' : '+code'}
+
   " }}}
 
   " FZF {{{
@@ -449,75 +507,159 @@
       \ 'marker':  ['fg', 'Keyword'],
       \ 'spinner': ['fg', 'Label'],
       \ 'header':  ['fg', 'Comment'] }
+
+    if has('nvim')
+      let $FZF_DEFAULT_OPTS .= ' --border --margin=0,2'
+
+      function! FloatingFZF()
+        "let width = min([&columns - 4, max([80, &columns - 20])])
+        "let height = min([&lines - 4, max([20, &lines - 10])])
+        "let top = ((&lines - height) / 2) - 1
+        "let left = (&columns - width) / 2
+        "let opts = {'relative': 'editor', 'row': top, 'col': left, 'width': width, 'height': height, 'style': 'minimal'}
+
+        "let buf = nvim_create_buf(v:false, v:true)
+        "call nvim_open_win(buf, v:true, opts)
+        "let top = '╭' . repeat('─', width - 2) . '╮'
+        "let mid = '│' . repeat(' ', width - 2) . '│'
+        "let bot = '╰' . repeat('─', width - 2) . '╯'
+        "let lines = [top] + repeat([mid], height - 2) + [bot]
+        "let s:buf = nvim_create_buf(v:false, v:true)
+        "call nvim_buf_set_lines(s:buf, 0, -1, v:true, lines)
+        "call nvim_open_win(s:buf, v:true, opts)
+        "set winhl=Normal:Floating
+        "let opts.row += 1
+        "let opts.height -= 2
+        "let opts.col += 2
+        "let opts.width -= 4
+        "call nvim_open_win(buf, v:true, opts)
+        "augroup fzf_window_aucmds
+          "au!
+          "au BufWipeout <buffer> exe 'bw '.s:buf
+        "augroup END
+        let width = float2nr(&columns * 0.9)
+        let height = float2nr(&lines * 0.6)
+        let opts = { 'relative': 'editor',
+                   \ 'row': (&lines - height) / 2,
+                   \ 'col': (&columns - width) / 2,
+                   \ 'width': width,
+                   \ 'height': height,
+                   \ 'style': 'minimal'}
+
+        let win = nvim_open_win(nvim_create_buf(v:false, v:true), v:true, opts)
+        call setwinvar(win, '&winhighlight', 'NormalFloat:Normal')
+      endfunction
+
+      let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+    endif
+  " }}}
+
+  " LSP {{{
   " }}}
 
   " CoC {{{
-    " Extensions could be used for CoC to have more powerful features
-    " Here is the list:
-    " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions << Explanation
-    " https://www.npmjs.com/search?q=keywords%3Acoc.nvim << Actual list
+    " General {{{
+      " Extensions could be used for CoC to have more powerful features
+      " Here is the list:
+      " https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions << Explanation
+      " https://www.npmjs.com/search?q=keywords%3Acoc.nvim << Actual list
 
-    " use <tab> for trigger completion and navigate to next complete item
-    function! s:check_back_space() abort
-      let col = col('.') - 1
-      return !col || getline('.')[col - 1]  =~ '\s'
-    endfunction
+      " use <tab> for trigger completion and navigate to next complete item
+      function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+      endfunction
 
-    " Next by Tab
-    inoremap <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#rpc#request('doKeymap', ['snippets-expand', "\<TAB>"])
+      " Next by Tab
+      inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#rpc#request('doKeymap', ['snippets-expand', "\<TAB>"])
 
-    " Previous by Tab
-    inoremap <silent><expr><S-Tab>
-          \ pumvisible() ? "\<C-p>" :
-          \<SID>check_back_space() ? "\<S-Tab>" :
-          \ coc#rpc#request('doKeymap', ['snippets-expand', "\<S-Tab>"])
+      " Previous by Tab
+      inoremap <silent><expr><S-Tab>
+            \ pumvisible() ? "\<C-p>" :
+            \ <SID>check_back_space() ? "\<S-Tab>" :
+            \ coc#rpc#request('doKeymap', ['snippets-expand', "\<S-Tab>"])
 
-    " use <c-space>for trigger completion
-    imap <expr><c-space> coc#refresh()
+      " use <c-space>for trigger completion
+      imap <silent><expr> <c-space> coc#refresh()
 
-    " Don't go to new line on enter when completing
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-    " Use <C-l> to trigger snippet expand.
-    imap <C-l> <Plug>(coc-snippets-expand)
-
-    " Use <C-j> to select text for visual text of snippet.
-    vmap <C-j> <Plug>(coc-snippets-select)
-
-    " Show doc
-    function! s:show_doc() 
-      if &filetype == 'vim'
-        execute 'h ' . expand('<cword>')
+      " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+      " position. Coc only does snippet and additional edit on confirm.
+      if has('patch8.1.1068')
+        " Use `complete_info` if your (Neo)Vim version supports it.
+        inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
       else
-        call CocAction('doHover')
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
       endif
-    endfunction
-    nnoremap <silent> K :call <SID>show_doc()<CR>
-    nnoremap <silent><leader>dh :call <SID>show_doc()<CR>
 
-    " GoTos
-    nnoremap <silent><leader>gd :call CocAction('jumpDefinition')<CR>
-    nnoremap <silent><leader>gl :call CocAction('jumpDeclaration')<CR>
-    nnoremap <silent><leader>gi :call CocAction('jumpImplementation')<CR>
+      " Use <C-j> to select text for visual text of snippet.
+      vmap <C-j> <Plug>(coc-snippets-select)
 
-    " Diag navigation
-    nnoremap <silent><leader>ge :call CocActionAsync('diagnosticList', 'error')<CR>
-    nnoremap ]e :call CocActionAsync('diagnosticNext', 'error')<CR>
-    nnoremap [e :call CocActionAsync('diagnosticPrevious', 'error')<CR>
+      " Show doc
+      function! s:show_doc()
+        if (index(['vim','help'], &filetype) >= 0)
+          execute 'h '.expand('<cword>')
+        else
+          call CocAction('doHover')
+        endif
+      endfunction
 
-    " Other helpful stuff
-    nnoremap <silent><leader>gc :call CocAction('codeAction')<CR>
-    nnoremap <silent><leader>gr :call CocAction('rename')<CR>
-    nnoremap <silent><leader>gq :call CocAction('quickfixes')<CR>
-    nnoremap <silent><leader>gL :CocList<CR>
+      nnoremap <silent> K :call <SID>show_doc()<CR>
+      nnoremap <silent><leader>dh :call <SID>show_doc()<CR>
+
+      " GoTos
+      nnoremap <silent><leader>gd :call CocAction('jumpDefinition')<CR>
+      nnoremap <silent><leader>gl :call CocAction('jumpDeclaration')<CR>
+      nnoremap <silent><leader>gi :call CocAction('jumpImplementation')<CR>
+      nnoremap <silent><leader>gr <Plug>(coc-references)
+
+      " Use `[g` and `]g` to navigate diagnostics
+      nmap <silent> [e <Plug>(coc-diagnostic-prev)
+      nmap <silent> ]e <Plug>(coc-diagnostic-next)
+      " and qf to fix em (or try at least
+      nmap <leader>qf <Plug>(coc-fix-current)
+      
+      " Add `:OR` command for organize imports of the current buffer.
+      command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+      " Other helpful stuff
+      nnoremap <silent><leader>gc :call CocAction('codeAction')<CR>
+      nnoremap <silent><leader>gR :call CocAction('rename')<CR>
+      nnoremap <silent><leader>gq :call CocAction('quickfixes')<CR>
+      nnoremap <silent><leader>,. :call CocActionAsync('format')<CR>
+      nnoremap <silent><leader>gL :CocList<CR>
+
+      " Highlight the symbol and its references when holding the cursor.
+      autocmd CursorHold * silent call CocActionAsync('highlight')
+    " }}}
+
+    " Clojure stuff {{{
+      nnoremap <silent> <leader>rrc :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'cycle-coll', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rrn :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'clean-ns', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rrp :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'cycle-privacy', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rrf :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'extract-function', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Function name: ')]})<CR>
+
+      nnoremap <silent> <leader>rth :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-first', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rtt :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-last', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rtf :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-first-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rtl :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'thread-last-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rtw :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'unwind-thread', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>rta :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'unwind-all', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      
+      nnoremap <silent> <leader>rlm :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'move-to-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Binding name: ')]})<CR>
+      nnoremap <silent> <leader>rli :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'introduce-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1, input('Binding name: ')]})<CR>
+      nnoremap <silent> <leader>rle :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'expand-let', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+
+      nnoremap <silent> <leader>rom :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'add-missing-libspec', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+      nnoremap <silent> <leader>ros :call CocRequest('clojure-lsp', 'workspace/executeCommand', {'command': 'inline-symbol', 'arguments': [Expand('%:p'), line('.') - 1, col('.') - 1]})<CR>
+    " }}}
   " }}}
 
   " Numbers {{{
-    let g:numbers_exclude = ['help', 'fzf', 'tagbar', 'gundo', 'vimshell',
-      \ 'nerdtree', 'startify', 'w3m', 'Mundo', 'MundoDiff', 'terminal']
+    let g:numbers_exclude = ['help', 'fzf', 'tagbar', 'gundo', 'vimshell', 'undo',
+      \ 'nerdtree', 'startify', 'w3m', 'Mundo', 'MundoDiff', 'terminal', 'undotree']
   " }}}
 
   " Markdown {{{
@@ -582,13 +724,45 @@
   " OneDark {{{
     " Allow italic text in terminal
     let g:onedark_terminal_italics=1
+    let g:onedark_termcolors = 16
+
   " }}}
 
-  " Conjure {{{
+  " Parinfer {{{
+    nmap <leader>p0 :ParinferOff<CR>
+    nmap <leader>po :ParinferOn<CR>
+  " }}}
+
+  " UndoTree {{{
+    nnoremap <silent><leader>bu :UndotreeToggle<CR>:UndotreeFocus<CR>
   " }}}
 " }}}
 
+" AutoCmd {{{
+  " Instead of reverting the cursor to the last position in the buffer, we
+  " set it to the first line when editing a git commit message
+  au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+
+  " Open help as rightmost split
+  au FileType help wincmd L
+
+  " Remove trailing whitespaces and ^M chars
+  " To disable the stripping of whitespace, add the following to your
+  autocmd FileType c,cpp,java,php,javascript,puppet,python,rust,twig,xml,yml,perl,lua,clojure autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+
+  " autoformat file on save and exec eval
+
+  "au FileType clojure autocmd BufWritePre <buffer> call CocActionAsync('format')
+
+" }}}
+
 " Functions {{{
+  " Clojure thingeys {{{
+    function! Expand(exp) abort
+      let l:result = expand(a:exp)
+      return l:result ==# '' ? '' : "file://" . l:result
+    endfunction
+  " }}}
   " Fold text formatting {{{
     let defaults = {'placeholder': 'Ⱝ', 'line': 'ᚚ', 'whole': 'ᛈ',
     \       'level': 'ᛝ', 'division': '/', 'multiplication': '*',
@@ -859,4 +1033,5 @@
     endfunction
     call InitializeDirectories()
   " }}}
+
 " }}}
